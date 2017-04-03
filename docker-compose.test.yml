@@ -1,0 +1,145 @@
+version: '2'
+
+services:
+  # INTVOICE containers ------------------------------------------
+  test-intvoice-php:
+    extends: 
+      file: ${INTVOICE_PATH}/docker-compose.yml
+      service: intvoice-main-php
+    links:
+        - test-intvoice-redis
+        - test-intvoice-www
+        - test-intvoice-mysql
+        - test-intvoice-selenium
+        - test-banking-www
+    depends_on:
+      - test-intvoice-mysql
+    volumes:
+      - ${INTVOICE_PATH}/:/var/www/html
+    env_file:
+      - ${INTVOICE_PATH}/.env.testing
+    environment:
+      - DB_DATABASE=innolend_test
+      - APP_URL=http://test-intvoice-www
+
+  test-intvoice-php-small:
+    extends: 
+      file: ${INTVOICE_PATH}/docker-compose.yml
+      service: intvoice-main-php
+    links:
+        - test-intvoice-redis
+        - test-intvoice-mysql
+    volumes:
+      - ${INTVOICE_PATH}/:/var/www/html
+    env_file:
+      - ${INTVOICE_PATH}/.env.testing
+    environment:
+      - DB_DATABASE=innolend_test
+      - APP_URL=http://test-intvoice-www
+    depends_on:
+      - test-intvoice-mysql
+
+  test-intvoice-selenium:
+    image: selenium/standalone-chrome
+    ports:
+      - "4444:4444"
+    links:
+      - test-intvoice-www
+    volumes:
+      - /dev/shm:/dev/shm
+  
+  test-intvoice-www:
+    extends: 
+      file: ${INTVOICE_PATH}/docker-compose.yml
+      service: intvoice-main-www
+    links:
+      - test-intvoice-php-small
+    volumes:
+      - ${INTVOICE_PATH}/docker/nginx_test:/etc/nginx/conf.d
+      - ${INTVOICE_PATH}/:/var/www/html
+      - ${INTVOICE_PATH}/docker/logs/nginx:/var/log/nginx
+
+  test-intvoice-mysql:
+    extends: 
+      file: ${INTVOICE_PATH}/docker-compose.yml
+      service: intvoice-main-mysql
+    volumes:
+      - ${INTVOICE_PATH}/mysql:/var/lib/mysql
+    environment:
+      DB_DATABASE: innolend_test
+      DB_USERNAME: homestead
+      DB_PASSWORD: secret
+      DB_ROOT_PASSWORD: supersecret
+    privileged: true
+
+  test-intvoice-redis:
+    extends: 
+      file: ${INTVOICE_PATH}/docker-compose.yml
+      service: intvoice-redis
+
+  test-intvoice-packages:
+    extends: 
+      file: ${INTVOICE_PATH}/docker-compose.yml
+      service: intvoice-main-packages
+    volumes:
+      - ${INTVOICE_PATH}/:/workspace
+
+  # BANKING containers ------------------------------------------
+  test-banking-php:
+    extends: 
+      file: ${BANKING_PATH}/docker-compose.yml
+      service: banking-main-php
+    links:
+      - test-banking-mysql
+      - test-banking-redis
+    depends_on:
+      - test-banking-mysql
+    volumes:
+      - ${BANKING_PATH}/:/var/www/html
+    env_file:
+      - ${BANKING_PATH}/.env.testing
+    environment:
+      - DB_DATABASE=banking_test
+
+  test-banking-www:
+    extends: 
+      file: ${BANKING_PATH}/docker-compose.yml
+      service: banking-main-www
+    links:
+      - test-banking-php
+    volumes:
+      - ${BANKING_PATH}/docker/nginx-test:/etc/nginx/conf.d
+      - ${BANKING_PATH}/:/var/www/html
+      - ${BANKING_PATH}/docker/logs/nginx:/var/log/nginx
+    env_file:
+      - ${BANKING_PATH}/.env.testing
+
+  test-banking-mysql:
+    extends: 
+      file: ${BANKING_PATH}/docker-compose.yml
+      service: banking-main-mysql
+    image: innolend/docker-mariadb
+    volumes:
+      - ${BANKING_PATH}/mysql:/var/lib/mysql
+    environment:
+      DB_DATABASE: banking_test
+      DB_USERNAME: homestead
+      DB_PASSWORD: secret
+      DB_ROOT_PASSWORD: supersecret
+    privileged: true
+
+  test-banking-redis:
+    extends: 
+      file: ${BANKING_PATH}/docker-compose.yml
+      service: banking-redis
+
+  test-banking-packages:
+    extends: 
+      file: ${BANKING_PATH}/docker-compose.yml
+      service: banking-main-packages
+    volumes:
+      - ${BANKING_PATH}/:/workspace
+
+volumes:
+    mysql:
+        driver: "local"
