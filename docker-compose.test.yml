@@ -19,7 +19,7 @@ services:
     env_file:
       - ${INTVOICE_PATH}/.env.testing
     environment:
-      - DB_DATABASE=innolend_test
+      - DB_DATABASE=${INTVOICE_TEST_DB_DATABASE}
       - APP_URL=http://test-intvoice-www
 
   test-intvoice-php-small:
@@ -34,7 +34,7 @@ services:
     env_file:
       - ${INTVOICE_PATH}/.env.testing
     environment:
-      - DB_DATABASE=innolend_test
+      - DB_DATABASE=${INTVOICE_TEST_DB_DATABASE}
       - APP_URL=http://test-intvoice-www
     depends_on:
       - test-intvoice-mysql
@@ -42,7 +42,7 @@ services:
   test-intvoice-selenium:
     image: selenium/standalone-chrome
     ports:
-      - "4444:4444"
+      - "${SELENIUM_PORT}:4444"
     links:
       - test-intvoice-www
     volumes:
@@ -66,10 +66,10 @@ services:
     volumes:
       - ${INTVOICE_PATH}/mysql:/var/lib/mysql
     environment:
-      DB_DATABASE: innolend_test
-      DB_USERNAME: homestead
-      DB_PASSWORD: secret
-      DB_ROOT_PASSWORD: supersecret
+      DB_DATABASE: ${INTVOICE_TEST_DB_DATABASE}
+      DB_USERNAME: ${INTVOICE_TEST_DB_USERNAME}
+      DB_PASSWORD: ${INTVOICE_TEST_DB_PASSWORD}
+      DB_ROOT_PASSWORD: ${INTVOICE_TEST_DB_ROOT_PASSWORD}
     privileged: true
 
   test-intvoice-redis:
@@ -99,7 +99,7 @@ services:
     env_file:
       - ${BANKING_PATH}/.env.testing
     environment:
-      - DB_DATABASE=banking_test
+      - DB_DATABASE=${BANKING_TEST_DB_DATABASE}
 
   test-banking-www:
     extends: 
@@ -122,10 +122,10 @@ services:
     volumes:
       - ${BANKING_PATH}/mysql:/var/lib/mysql
     environment:
-      DB_DATABASE: banking_test
-      DB_USERNAME: homestead
-      DB_PASSWORD: secret
-      DB_ROOT_PASSWORD: supersecret
+      DB_DATABASE: ${BANKING_TEST_DB_DATABASE}
+      DB_USERNAME: ${BANKING_TEST_DB_USERNAME}
+      DB_PASSWORD: ${BANKING_TEST_DB_PASSWORD}
+      DB_ROOT_PASSWORD: ${BANKING_TEST_DB_ROOT_PASSWORD}
     privileged: true
 
   test-banking-redis:
