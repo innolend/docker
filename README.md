@@ -16,38 +16,38 @@ docker-compose up -d
 
 ## List of available commands
 
-##Intvoice
-> ###Composer
+- Intvoice
+> Composer
 > ```
 > docker-compose run --rm intvoice-php composer
 > ```
-> ###Artisan
+> Artisan
 > ```
 > docker-compose run --rm intvoice-php php artisan
 > ```
-> ###Gulp
+> Gulp
 > ```
 > docker-compose run --rm intvoice-packages gulp
 > ```
-> ###Yarn
+> Yarn
 > ```
 > docker-compose run --rm intvoice-packages yarn
 > ```
 
-##Banking
->  ###Composer
+- Banking
+> Composer
 > ```
 > docker-compose run --rm banking-php composer
 > ```
-> ###Artisan
+> Artisan
 > ```
 > docker-compose run --rm banking-php php artisan
 > ```
-> ###Gulp
+> Gulp
 > ```
 > docker-compose run --rm banking-packages gulp
 > ```
-> ###Yarn
+> Yarn
 > ```
 > docker-compose run --rm banking-packages yarn
 > ```
