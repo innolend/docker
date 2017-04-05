@@ -30,12 +30,11 @@ services:
     ports:
         - "${INTVOICE_WWW_PORT}:80"
     links:
-      - intvoice-php
+      - intvoice-php:php-fpm-host
     depends_on:
       - intvoice-php
     volumes:
-      - ${INTVOICE_PATH}/:/var/www/html
-      - ${INTVOICE_PATH}/docker/nginx:/etc/nginx/conf.d      
+      - ${INTVOICE_PATH}/:/var/www/html    
       - ${INTVOICE_PATH}/docker/logs/nginx:/var/log/nginx
 
   intvoice-mysql:
@@ -44,6 +43,11 @@ services:
       service: intvoice-main-mysql
     volumes:
       - ${INTVOICE_PATH}/mysql:/var/lib/mysql
+    environment:
+      DB_DATABASE: ${INTVOICE_DB_DATABASE}
+      DB_USERNAME: ${INTVOICE_DB_USERNAME}
+      DB_PASSWORD: ${INTVOICE_DB_PASSWORD}
+      DB_ROOT_PASSWORD: ${INTVOICE_DB_ROOT_PASSWORD}      
 
   intvoice-redis:
     extends: 
@@ -77,12 +81,11 @@ services:
     ports:
         - "${BANKING_WWW_PORT}:80"
     links:
-      - banking-php
+      - banking-php:php-fpm-host
     depends_on:
       - banking-php
     volumes:
       - ${BANKING_PATH}/:/var/www/html
-      - ${BANKING_PATH}/docker/nginx:/etc/nginx/conf.d      
       - ${BANKING_PATH}/docker/logs/nginx:/var/log/nginx
 
   banking-mysql:
@@ -91,6 +94,11 @@ services:
       service: banking-mysql
     volumes:
       - ${BANKING_PATH}/mysql:/var/lib/mysql
+    environment:
+      DB_DATABASE: ${BANKING_DB_DATABASE}
+      DB_USERNAME: ${BANKING_DB_USERNAME}
+      DB_PASSWORD: ${BANKING_DB_PASSWORD}
+      DB_ROOT_PASSWORD: ${BANKING_DB_ROOT_PASSWORD} 
 
   banking-redis:
     extends: 

@@ -148,7 +148,7 @@ local_env_menu() {
   echo "* 8 - Back                                           *"
   echo "******************************************************"
 
-  read -p "Enter selection [1-5] > "
+  read -p "Enter selection [1-8] > "
 
   if [[ $REPLY =~ ^[1-8]$ ]]; then
     case $REPLY in

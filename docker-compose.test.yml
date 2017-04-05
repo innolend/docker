@@ -53,9 +53,8 @@ services:
       file: ${INTVOICE_PATH}/docker-compose.yml
       service: intvoice-main-www
     links:
-      - test-intvoice-php-small
+      - test-intvoice-php-small:php-fpm-host
     volumes:
-      - ${INTVOICE_PATH}/docker/nginx_test:/etc/nginx/conf.d
       - ${INTVOICE_PATH}/:/var/www/html
       - ${INTVOICE_PATH}/docker/logs/nginx:/var/log/nginx
 
@@ -106,9 +105,8 @@ services:
       file: ${BANKING_PATH}/docker-compose.yml
       service: banking-main-www
     links:
-      - test-banking-php
+      - test-banking-php:php-fpm-host
     volumes:
-      - ${BANKING_PATH}/docker/nginx-test:/etc/nginx/conf.d
       - ${BANKING_PATH}/:/var/www/html
       - ${BANKING_PATH}/docker/logs/nginx:/var/log/nginx
     env_file:
