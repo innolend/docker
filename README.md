@@ -10,6 +10,11 @@ All of this you will able to do by executing the script
 ```
  sh ./commander.sh 
 ```
+Then you need to add aliases to yours host file
+```
+127.0.0.1 intvoice-docker.local banking-docker.local
+127.0.0.1 test-intvoice-docker.local test-banking-docker.local
+```
 
 ## Local env with Docker only for experts
 ## Basic configuration
