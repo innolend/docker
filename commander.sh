@@ -142,15 +142,28 @@ local_env_menu() {
   echo "* 2 - Update ENV                                     *"
   echo "* 3 - INTVOICE                                       *"
   echo "* 4 - BANKING                                        *"
-  echo "* 5 - Back                                           *"
+  echo "* 5 - Start ENV                                      *"
+  echo "* 6 - Turn off ENV                                   *"
+  echo "* 7 - Remove ENV                                     *"
+  echo "* 8 - Back                                           *"
   echo "******************************************************"
 
   read -p "Enter selection [1-5] > "
 
-  if [[ $REPLY =~ ^[1-5]$ ]]; then
+  if [[ $REPLY =~ ^[1-8]$ ]]; then
     case $REPLY in
       1)
         echo "Building ENV...";
+        echo "Stop previous version"
+        docker-compose stop
+        echo "Remove previous version"
+        docker-compose rm -f
+        echo "Update containers"
+        docker-compose pull
+        echo "Execute laravel seed"
+        docker-compose up -d
+        echo "Waiting until servers will be ready to recieve connections"
+        sleep 20
         docker-compose run banking-php php artisan droptables
         docker-compose run banking-php php artisan migrate
         docker-compose run banking-php php artisan db:seed
@@ -175,6 +188,22 @@ local_env_menu() {
         banking_menu
         ;;
       5)
+        docker-compose up -d
+        read -p "Env started! Press enter to continue"
+        local_env_menu
+        ;;
+      6)
+        docker-compose stop
+        read -p "Env stopped! Press enter to continue"
+        local_env_menu
+        ;;
+      7)
+        docker-compose stop
+        docker-compose rm -f
+        read -p "Env removed! Press enter to continue"
+        local_env_menu
+        ;;
+      8)
         main_menu
         ;;
     esac
