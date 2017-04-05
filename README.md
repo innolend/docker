@@ -1,6 +1,17 @@
 ## Innolend Docker
 
-## Local env with Docker
+Please use our tool to build what ever you want.
+- Build env
+- Run tests
+- Execute commands
+etc.
+
+All of this you will able to do by executing the script
+```
+ sh ./commander.sh 
+```
+
+## Local env with Docker only for experts
 #### basic configuration
 - Copy `.env.example` to `.env` , by executing following command
 ```
@@ -16,7 +27,7 @@ docker-compose up -d
 127.0.0.1 test-intvoice-docker.local test-banking-docker.local
 ```
 
-### List of available commands
+### List of available commands only for experts
 
 ####Intvoice
 #####Composer
