@@ -7,7 +7,13 @@ intvoice_menu() {
   echo "* INTVOICE ENV                                       *"
   echo "******************************************************"
   echo "* 1 - Composer                                       *"
+  echo "* 1a - Composer install                              *"
+  echo "* 1b - Composer update --no-scripts                  *"
   echo "* 2 - Artisan                                        *"
+  echo "* 2a - Artisan Migrate                               *"
+  echo "* 2b - Artisan DB seed                               *"
+  echo "* 2c - Artisan cache:clear                           *"
+  echo "* 2d - Artisan route:clear                           *"
   echo "* 3 - Rebuild Gulp                                   *"
   echo "* 4 - Yarn                                           *"
   echo "* 5 - Back                                           *"
@@ -20,17 +26,40 @@ intvoice_menu() {
 
   read -p "Enter selection [1-5] > "
 
-  if [[ $REPLY =~ ^[1-5]$ ]]; then
+  if [[ $REPLY =~ ^[1-5]{1} ]]; then
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
         docker-compose run --rm intvoice-php composer $REPLY
         post_message
         ;;
+      1a)
+        docker-compose run --rm intvoice-php composer install
+        post_message
+        ;;
+      1b)
+        docker-compose run --rm intvoice-php composer update --no-scripts  
+        post_message
+        ;;
       2)
         read -p "Please enter the Artisan command > "
         docker-compose run --rm intvoice-php php artisan $REPLY
-
+        post_message
+        ;;
+      2a)
+        docker-compose run --rm intvoice-php php artisan migrate
+        post_message
+        ;;
+      2b)
+        docker-compose run --rm intvoice-php php artisan db:seed
+        post_message
+        ;;
+      2c)
+        docker-compose run --rm intvoice-php php artisan cache:clear
+        post_message
+        ;;
+      2d)
+        docker-compose run --rm intvoice-php php artisan route:clear
         post_message
         ;;
       3)
@@ -60,7 +89,13 @@ banking_menu() {
   echo "* BANKING ENV                                        *"
   echo "******************************************************"
   echo "* 1 - Composer                                       *"
+  echo "* 1a - Composer install                              *"
+  echo "* 1b - Composer update --no-scripts                  *"
   echo "* 2 - Artisan                                        *"
+  echo "* 2a - Artisan Migrate                               *"
+  echo "* 2b - Artisan DB seed                               *"
+  echo "* 2c - Artisan cache:clear                           *"
+  echo "* 2d - Artisan route:clear                           *"
   echo "* 3 - Rebuild Gulp                                   *"
   echo "* 4 - Yarn                                           *"
   echo "* 5 - Back                                           *"
@@ -74,7 +109,7 @@ banking_menu() {
 
   read -p "Enter selection [1-5] > "
 
-  if [[ $REPLY =~ ^[1-5]$ ]]; then
+  if [[ $REPLY =~ ^[1-5]{1} ]]; then
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
@@ -84,6 +119,30 @@ banking_menu() {
       2)
         read -p "Please enter the Artisan command > "
         docker-compose run --rm banking-php php artisan $REPLY
+        post_message
+        ;;
+      1a)
+        docker-compose run --rm banking-php composer install
+        post_message
+        ;;
+      1b)
+        docker-compose run --rm banking-php composer update --no-scripts  
+        post_message
+        ;;
+      2a)
+        docker-compose run --rm banking-php php artisan migrate
+        post_message
+        ;;
+      2b)
+        docker-compose run --rm banking-php php artisan db:seed
+        post_message
+        ;;
+      2c)
+        docker-compose run --rm banking-php php artisan cache:clear
+        post_message
+        ;;
+      2d)
+        docker-compose run --rm banking-php php artisan route:clear
         post_message
         ;;
       3)
