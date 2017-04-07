@@ -223,9 +223,11 @@ local_env_menu() {
         docker-compose up -d
         echo "Waiting until servers will be ready to recieve connections"
         sleep 20
+        docker-compose run banking-php composer install
         docker-compose run banking-php php artisan droptables
         docker-compose run banking-php php artisan migrate
         docker-compose run banking-php php artisan db:seed
+        docker-compose run intvoice-php composer install
         docker-compose run intvoice-php php artisan droptables
         docker-compose run intvoice-php php artisan migrate
         docker-compose run intvoice-php php artisan db:seed
