@@ -9,15 +9,11 @@ echo "Waiting for data servers will able to recieve connections"
 sleep 30
 
 echo "Refill banking test database"
-docker-compose -f docker-compose.test.yml run test-banking-php php artisan droptables --env=testing
-docker-compose -f docker-compose.test.yml run test-banking-php php artisan migrate --env=testing
-docker-compose -f docker-compose.test.yml run test-banking-php php artisan db:seed --env=testing
+docker-compose -f docker-compose.test.yml run test-banking-php php sh -c "artisan droptables --env=testing && php artisan migrate --env=testing && php artisan db:seed --env=testing"
 docker-compose -f docker-compose.test.yml stop
 
 echo "Refill intvoice test database"
-docker-compose -f docker-compose.test.yml run test-intvoice-php php artisan droptables --env=testing 
-docker-compose -f docker-compose.test.yml run test-intvoice-php php artisan migrate --env=testing
-docker-compose -f docker-compose.test.yml run test-intvoice-php php artisan migrate --env=testing
+docker-compose -f docker-compose.test.yml run test-intvoice-php php sh -c "artisan droptables --env=testing && php artisan migrate --env=testing && php artisan db:seed --env=testing"
 docker-compose -f docker-compose.test.yml stop
 
 echo "Running tests"
