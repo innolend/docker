@@ -1,14 +1,6 @@
 version: '2'
 
 services:
-  # Slack container ----------------------------------------------
-  innolend-slack:
-    image: innolend/docker-slack
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - webhook=${INNOLEND_SLACK}
-
   # INTVOICE containers ------------------------------------------
   intvoice-php:
     extends: 
