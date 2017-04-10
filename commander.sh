@@ -225,10 +225,14 @@ local_env_menu() {
         sleep 20
         docker-compose run banking-php sh -c "composer install && php artisan droptables && php artisan migrate && php artisan db:seed && php artisan l5:generate"
         source .env
-        API_TOKEN="$(docker-compose run banking-php php artisan generate_token --key=foo-api-key --password=lalelu123)"
+        echo "Generating API KEY"
+        docker-compose run intvoice-php sh -c "composer install"
+        API_TOKEN="$(docker-compose run intvoice-php php artisan get_banking_key --key=foo-api-key --password=lalelu123)"
+        echo "Setting API KEY to: ${API_TOKEN}"
         cp ${INTVOICE_PATH}/.env ${INTVOICE_PATH}/.env.bak
         sed "s/^BANKING_API_TOKEN=.*/BANKING_API_TOKEN=${API_TOKEN}/g" "${INTVOICE_PATH}/.env.bak" > ${INTVOICE_PATH}/.env
-        docker-compose run intvoice-php sh -c "composer install && php artisan droptables && php artisan migrate && php artisan db:seed && php artisan l5:generate"
+        echo "Start working with INTVOICE"
+        docker-compose run intvoice-php sh -c "php artisan droptables && php artisan migrate && php artisan db:seed && php artisan l5:generate"
         read -p "Press enter to continue"
         main_menu
         ;;
