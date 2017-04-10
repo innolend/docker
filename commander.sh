@@ -231,6 +231,8 @@ local_env_menu() {
         echo "Setting API KEY to: ${API_TOKEN}"
         cp ${INTVOICE_PATH}/.env ${INTVOICE_PATH}/.env.bak
         sed "s/^BANKING_API_TOKEN=.*/BANKING_API_TOKEN=${API_TOKEN}/g" "${INTVOICE_PATH}/.env.bak" > ${INTVOICE_PATH}/.env
+        cp ${INTVOICE_PATH}/.env.testing ${INTVOICE_PATH}/.env.testing.bak
+        sed "s/^BANKING_API_TOKEN=.*/BANKING_API_TOKEN=${API_TOKEN}/g" "${INTVOICE_PATH}/.env.testing.bak" > ${INTVOICE_PATH}/.env.testing
         echo "Start working with INTVOICE"
         docker-compose run intvoice-php sh -c "php artisan droptables && php artisan migrate && php artisan db:seed && php artisan l5:generate"
         read -p "Press enter to continue"
