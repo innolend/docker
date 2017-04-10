@@ -224,6 +224,10 @@ local_env_menu() {
         echo "Waiting until servers will be ready to recieve connections"
         sleep 20
         docker-compose run banking-php sh -c "composer install && php artisan droptables && php artisan migrate && php artisan db:seed && php artisan l5:generate"
+        source .env
+        API_TOKEN="$(docker-compose run banking-php php artisan generate_token --key=foo-api-key --password=lalelu123)"
+        cp ${INTVOICE_PATH}/.env ${INTVOICE_PATH}/.env.bak
+        sed "s/^BANKING_API_TOKEN=.*/BANKING_API_TOKEN=${API_TOKEN}/g" "${INTVOICE_PATH}/.env.bak" > ${INTVOICE_PATH}/.env
         docker-compose run intvoice-php sh -c "composer install && php artisan droptables && php artisan migrate && php artisan db:seed && php artisan l5:generate"
         read -p "Press enter to continue"
         main_menu
