@@ -1,0 +1,109 @@
+version: '2'
+
+services:
+  # INTVOICE containers ------------------------------------------
+  intvoice-php:
+    extends: 
+      file: ${INTVOICE_PATH}/docker-compose.yml
+      service: intvoice-main-php
+    links:
+      - intvoice-mysql
+      - intvoice-redis
+      - banking-www
+    volumes:
+      - ${INTVOICE_PATH}:/var/www/html
+    depends_on:
+      - intvoice-mysql
+
+  intvoice-www:
+    extends: 
+      file: ${INTVOICE_PATH}/docker-compose.yml
+      service: intvoice-main-www
+    ports:
+        - "${INTVOICE_WWW_PORT}:80"
+    links:
+      - intvoice-php:php-fpm-host
+    depends_on:
+      - intvoice-php
+    volumes:
+      - ${INTVOICE_PATH}/:/var/www/html    
+      - ${INTVOICE_PATH}/docker/logs/nginx:/var/log/nginx
+
+  intvoice-mysql:
+    extends: 
+      file: ${INTVOICE_PATH}/docker-compose.yml
+      service: intvoice-main-mysql
+    volumes:
+      - ${INTVOICE_PATH}/mysql:/var/lib/mysql
+    environment:
+      DB_DATABASE: ${INTVOICE_DB_DATABASE}
+      DB_USERNAME: ${INTVOICE_DB_USERNAME}
+      DB_PASSWORD: ${INTVOICE_DB_PASSWORD}
+      DB_ROOT_PASSWORD: ${INTVOICE_DB_ROOT_PASSWORD}      
+
+  intvoice-redis:
+    extends: 
+      file: ${INTVOICE_PATH}/docker-compose.yml
+      service: intvoice-redis
+
+  intvoice-packages:
+    extends: 
+      file: ${INTVOICE_PATH}/docker-compose.yml
+      service: intvoice-main-packages
+    volumes:
+      - ${INTVOICE_PATH}/:/workspace
+
+  # BANKING containers ------------------------------------------
+  banking-php:
+    extends: 
+      file: ${BANKING_PATH}/docker-compose.yml
+      service: banking-main-php
+    links:
+        - banking-redis
+        - banking-mysql
+    volumes:
+      - ${BANKING_PATH}/:/var/www/html
+    depends_on:
+      - banking-mysql
+
+  banking-www:
+    extends: 
+      file: ${BANKING_PATH}/docker-compose.yml
+      service: banking-main-www
+    ports:
+        - "${BANKING_WWW_PORT}:80"
+    links:
+      - banking-php:php-fpm-host
+    depends_on:
+      - banking-php
+    volumes:
+      - ${BANKING_PATH}/:/var/www/html
+      - ${BANKING_PATH}/docker/logs/nginx:/var/log/nginx
+
+  banking-mysql:
+    extends: 
+      file: ${BANKING_PATH}/docker-compose.yml
+      service: banking-mysql
+    volumes:
+      - ${BANKING_PATH}/mysql:/var/lib/mysql
+    environment:
+      DB_DATABASE: ${BANKING_DB_DATABASE}
+      DB_USERNAME: ${BANKING_DB_USERNAME}
+      DB_PASSWORD: ${BANKING_DB_PASSWORD}
+      DB_ROOT_PASSWORD: ${BANKING_DB_ROOT_PASSWORD} 
+
+  banking-redis:
+    extends: 
+      file: ${BANKING_PATH}/docker-compose.yml
+      service: banking-redis
+
+  banking-packages:
+    extends: 
+      file: ${BANKING_PATH}/docker-compose.yml
+      service: banking-main-packages
+    volumes:
+      - ${BANKING_PATH}/:/workspace
+
+volumes:
+    mysql:
+        driver: "local"
