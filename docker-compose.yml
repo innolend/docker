@@ -7,9 +7,9 @@ services:
       file: ${INTVOICE_PATH}/docker-compose.yml
       service: intvoice-main-php
     links:
-        - intvoice-mysql
-        - intvoice-redis
-        - banking-www
+      - intvoice-mysql
+      - intvoice-redis
+      - banking-www
     volumes:
       - ${INTVOICE_PATH}:/var/www/html
     depends_on:

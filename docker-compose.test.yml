@@ -17,7 +17,7 @@ services:
     volumes:
       - ${INTVOICE_PATH}/:/var/www/html
     env_file:
-      - ${INTVOICE_PATH}/.env.testing
+      - ${INTVOICE_PATH}/.env.docker.testing
     environment:
       - DB_DATABASE=${INTVOICE_TEST_DB_DATABASE}
       - APP_URL=http://test-intvoice-www
@@ -32,12 +32,17 @@ services:
     volumes:
       - ${INTVOICE_PATH}/:/var/www/html
     env_file:
-      - ${INTVOICE_PATH}/.env.testing
+      - ${INTVOICE_PATH}/.env.docker.testing
     environment:
       - DB_DATABASE=${INTVOICE_TEST_DB_DATABASE}
       - APP_URL=http://test-intvoice-www
     depends_on:
       - test-intvoice-mysql
+
+  test-intvoice-main-selenium: &TEST_INTVOICE_MAIN_SELENIUM
+    image: selenium/standalone-chrome
+    ports:
+      - "4444:4444"
 
   test-intvoice-selenium:
     image: selenium/standalone-chrome
@@ -96,7 +101,7 @@ services:
     volumes:
       - ${BANKING_PATH}/:/var/www/html
     env_file:
-      - ${BANKING_PATH}/.env.testing
+      - ${BANKING_PATH}/.env.docker.testing
     environment:
       - DB_DATABASE=${BANKING_TEST_DB_DATABASE}
 
@@ -110,7 +115,7 @@ services:
       - ${BANKING_PATH}/:/var/www/html
       - ${BANKING_PATH}/docker/logs/nginx:/var/log/nginx
     env_file:
-      - ${BANKING_PATH}/.env.testing
+      - ${BANKING_PATH}/.env.docker.testing
 
   test-banking-mysql:
     extends: 
