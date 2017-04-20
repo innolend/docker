@@ -30,46 +30,46 @@ intvoice_menu() {
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
-        docker-compose run --rm intvoice-php composer $REPLY
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php composer $REPLY
         post_message
         ;;
       1a)
-        docker-compose run --rm intvoice-php composer install
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php composer install
         post_message
         ;;
       1b)
-        docker-compose run --rm intvoice-php composer update --no-scripts  
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php composer update --no-scripts  
         post_message
         ;;
       2)
         read -p "Please enter the Artisan command > "
-        docker-compose run --rm intvoice-php php artisan $REPLY
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php --env=docker artisan $REPLY
         post_message
         ;;
       2a)
-        docker-compose run --rm intvoice-php php artisan migrate
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php --env=docker artisan migrate
         post_message
         ;;
       2b)
-        docker-compose run --rm intvoice-php php artisan db:seed
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php --env=docker artisan db:seed
         post_message
         ;;
       2c)
-        docker-compose run --rm intvoice-php php artisan cache:clear
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php --env=docker artisan cache:clear
         post_message
         ;;
       2d)
-        docker-compose run --rm intvoice-php php artisan route:clear
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php --env=docker artisan route:clear
         post_message
         ;;
       3)
         echo "Processing Gulp...";
-        docker-compose run --rm intvoice-packages gulp
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-packages gulp
         post_message
         ;;
       4)
         read -p "Please enter the Yarn command > "
-        docker-compose run --rm intvoice-packages yarn $REPLY
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-packages yarn $REPLY
         post_message
         ;;
       5)
@@ -113,46 +113,46 @@ banking_menu() {
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
-        docker-compose run --rm banking-php composer $REPLY
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php composer $REPLY
         post_message
         ;;
       2)
         read -p "Please enter the Artisan command > "
-        docker-compose run --rm banking-php php artisan $REPLY
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php artisan $REPLY
         post_message
         ;;
       1a)
-        docker-compose run --rm banking-php composer install
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php composer install
         post_message
         ;;
       1b)
-        docker-compose run --rm banking-php composer update --no-scripts  
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php composer update --no-scripts  
         post_message
         ;;
       2a)
-        docker-compose run --rm banking-php php artisan migrate
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php --env=docker artisan migrate
         post_message
         ;;
       2b)
-        docker-compose run --rm banking-php php artisan db:seed
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php --env=docker artisan db:seed
         post_message
         ;;
       2c)
-        docker-compose run --rm banking-php php artisan cache:clear
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php --env=docker artisan cache:clear
         post_message
         ;;
       2d)
-        docker-compose run --rm banking-php php artisan route:clear
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php --env=docker artisan route:clear
         post_message
         ;;
       3)
         echo "Processing Gulp...";
-        docker-compose run --rm banking-packages gulp
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-packages gulp
         post_message
         ;;
       4)
         read -p "Please enter the Yarn command > "
-        docker-compose run --rm banking-packages yarn $REPLY
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-packages yarn $REPLY
         post_message
         ;;
       5)
@@ -213,34 +213,19 @@ local_env_menu() {
     case $REPLY in
       1)
         echo "Building ENV...";
-        echo "Stop previous version"
-        docker-compose stop
-        echo "Remove previous version"
-        docker-compose rm -f
-        echo "Update containers"
-        docker-compose pull
-        echo "Execute laravel seed"
-        docker-compose up -d
-        echo "Waiting until servers will be ready to recieve connections"
-        sleep 20
-        docker-compose run banking-php sh -c "composer install && php artisan droptables --env=docker && php artisan migrate --env=docker && php artisan db:seed --env=docker && php artisan l5:generate"
-        source .env
-        echo "Generating API KEY"
-        docker-compose run intvoice-php sh -c "composer install"
-        API_TOKEN="$(docker-compose run intvoice-php php artisan --env=docker get_banking_key --key=foo-api-key --password=lalelu123)"
-        echo "Setting API KEY to: ${API_TOKEN}"
-        cp ${INTVOICE_PATH}/.env.docker ${INTVOICE_PATH}/.env.bak
-        sed "s/^BANKING_API_TOKEN=.*/BANKING_API_TOKEN=${API_TOKEN}/g" "${INTVOICE_PATH}/.env.bak" > ${INTVOICE_PATH}/.env.docker
-        cp ${INTVOICE_PATH}/.env.docker.testing ${INTVOICE_PATH}/.env.testing.bak
-        sed "s/^BANKING_API_TOKEN=.*/BANKING_API_TOKEN=${API_TOKEN}/g" "${INTVOICE_PATH}/.env.testing.bak" > ${INTVOICE_PATH}/.env.docker.testing
-        echo "Start working with INTVOICE"
-        docker-compose run intvoice-php sh -c "php artisan droptables --env=docker && php artisan migrate --env=docker && php artisan db:seed --env=docker && php artisan l5:generate --env=docker"
+        docker-compose -f ../INTVOICE/docker-compose.yml stop
+        docker-compose -f ../BANKING/docker-compose.yml stop
+        docker-compose -f ../INTVOICE/docker-compose.yml rm -f
+        docker-compose -f ../BANKING/docker-compose.yml rm -f
+        sh ./docker_env_pre_build.sh
+        sh ./docker_env_build.sh
         read -p "Press enter to continue"
         main_menu
         ;;
       2)
         echo "Updating ENV...";
-        docker-compose pull
+        docker-compose -f ../INTVOICE/docker-compose.yml pull
+        docker-compose -f ../BANKING/docker-compose.yml pull
 
         read -p "Press enter to continue"
         main_menu
@@ -252,7 +237,13 @@ local_env_menu() {
         banking_menu
         ;;
       5)
-        docker-compose up -d
+        docker-compose -f ../INTVOICE/docker-compose.yml stop
+        docker-compose -f ../BANKING/docker-compose.yml stop
+        docker-compose -f ../INTVOICE/docker-compose.yml up -d
+        docker-compose -f ../BANKING/docker-compose.yml up -d
+
+        echo "INTVOICE available on http://localhost:80";
+        echo "BANKING available on http://localhost:1180";
         read -p "Env started! Press enter to continue"
         local_env_menu
         ;;
