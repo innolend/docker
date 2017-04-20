@@ -90,58 +90,16 @@ services:
 
   # BANKING containers ------------------------------------------
   test-banking-php:
-    extends: 
-      file: ${BANKING_PATH}/docker-compose.yml
-      service: banking-main-php
-    links:
-      - test-banking-mysql
-      - test-banking-redis
-    depends_on:
-      - test-banking-mysql
+    image: innolend/php:1.0
     volumes:
-      - ${BANKING_PATH}/:/var/www/html
-    env_file:
-      - ${BANKING_PATH}/.env.docker.testing
-    environment:
-      - DB_DATABASE=${BANKING_TEST_DB_DATABASE}
+      - ${INTVOICE_PATH}/fake_banking/:/var/www/html
 
   test-banking-www:
-    extends: 
-      file: ${BANKING_PATH}/docker-compose.yml
-      service: banking-main-www
+    image: innolend/nginx:1.0
     links:
       - test-banking-php:php-fpm-host
     volumes:
-      - ${BANKING_PATH}/:/var/www/html
-      - ${BANKING_PATH}/docker/logs/nginx:/var/log/nginx
-    env_file:
-      - ${BANKING_PATH}/.env.docker.testing
-
-  test-banking-mysql:
-    extends: 
-      file: ${BANKING_PATH}/docker-compose.yml
-      service: banking-main-mysql
-    image: innolend/docker-mariadb
-    volumes:
-      - ${BANKING_PATH}/mysql:/var/lib/mysql
-    environment:
-      DB_DATABASE: ${BANKING_TEST_DB_DATABASE}
-      DB_USERNAME: ${BANKING_TEST_DB_USERNAME}
-      DB_PASSWORD: ${BANKING_TEST_DB_PASSWORD}
-      DB_ROOT_PASSWORD: ${BANKING_TEST_DB_ROOT_PASSWORD}
-    privileged: true
-
-  test-banking-redis:
-    extends: 
-      file: ${BANKING_PATH}/docker-compose.yml
-      service: banking-redis
-
-  test-banking-packages:
-    extends: 
-      file: ${BANKING_PATH}/docker-compose.yml
-      service: banking-main-packages
-    volumes:
-      - ${BANKING_PATH}/:/workspace
+      - ${INTVOICE_PATH}/fake_banking/:/var/www/html
 
 volumes:
     mysql:

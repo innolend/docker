@@ -9,7 +9,6 @@ services:
     links:
       - intvoice-mysql
       - intvoice-redis
-      - banking-www
     volumes:
       - ${INTVOICE_PATH}:/var/www/html
     depends_on:
