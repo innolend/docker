@@ -172,7 +172,8 @@ test_env_menu() {
   echo "* Test ENV                                           *"
   echo "******************************************************"
   echo "* 1 - Execute acceptiance tests                      *"
-  echo "* 2 - Back                                           *"
+  echo "* 2 - Rebuild / Execute acceptiance tests            *"
+  echo "* 3 - Back                                           *"
   echo "******************************************************"
   read -p "Enter selection [1-2] > "
   if [[ $REPLY =~ ^[1-2]$ ]]; then
@@ -182,6 +183,14 @@ test_env_menu() {
         sh ./docker_intvoice_acceptance_test_runner.sh
         ;;
       2)
+        echo "Rebuilding env"
+        docker-compose -f ../INTVOICE/docker-compose.test.yml stop
+        docker-compose -f ../INTVOICE/docker-compose.test.yml rm
+        docker-compose -f ../INTVOICE/docker-compose.test.yml pull
+        docker-compose -f ../INTVOICE/docker-compose.test.yml up -d
+        sh ./docker_intvoice_acceptance_test_runner.sh
+        ;;
+      3)
         main_menu
         ;;
     esac
@@ -226,7 +235,6 @@ local_env_menu() {
         echo "Updating ENV...";
         docker-compose -f ../INTVOICE/docker-compose.yml pull
         docker-compose -f ../BANKING/docker-compose.yml pull
-
         read -p "Press enter to continue"
         main_menu
         ;;
@@ -241,20 +249,22 @@ local_env_menu() {
         docker-compose -f ../BANKING/docker-compose.yml stop
         docker-compose -f ../INTVOICE/docker-compose.yml up -d
         docker-compose -f ../BANKING/docker-compose.yml up -d
-
         echo "INTVOICE available on http://localhost:80";
         echo "BANKING available on http://localhost:1180";
         read -p "Env started! Press enter to continue"
         local_env_menu
         ;;
       6)
-        docker-compose stop
+        docker-compose -f ../INTVOICE/docker-compose.yml stop
+        docker-compose -f ../BANKING/docker-compose.yml stop
         read -p "Env stopped! Press enter to continue"
         local_env_menu
         ;;
       7)
-        docker-compose stop
-        docker-compose rm -f
+        docker-compose -f ../INTVOICE/docker-compose.yml stop
+        docker-compose -f ../BANKING/docker-compose.yml stop
+        docker-compose -f ../INTVOICE/docker-compose.yml rm -f
+        docker-compose -f ../BANKING/docker-compose.yml rm -f
         read -p "Env removed! Press enter to continue"
         local_env_menu
         ;;
