@@ -16,7 +16,8 @@ intvoice_menu() {
   echo "* 2d - Artisan route:clear                           *"
   echo "* 3 - Rebuild Gulp                                   *"
   echo "* 4 - Yarn                                           *"
-  echo "* 5 - Back                                           *"
+  echo "* 5 - Rebuild Cache                                  *"
+  echo "* 6 - Back                                           *"
   echo "******************************************************"
 
   post_message() {
@@ -73,6 +74,9 @@ intvoice_menu() {
         post_message
         ;;
       5)
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
+        ;;
+      6)
         local_env_menu
         ;;
     esac
@@ -98,7 +102,8 @@ banking_menu() {
   echo "* 2d - Artisan route:clear                           *"
   echo "* 3 - Rebuild Gulp                                   *"
   echo "* 4 - Yarn                                           *"
-  echo "* 5 - Back                                           *"
+  echo "* 5 - Rebuild Cache                                  *"
+  echo "* 6 - Back                                           *"
   echo "******************************************************"
 
   post_message() {
@@ -156,6 +161,9 @@ banking_menu() {
         post_message
         ;;
       5)
+        docker-compose -f ../BANKING/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
+        ;;
+      6)
         local_env_menu
         ;;
     esac
