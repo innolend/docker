@@ -13,3 +13,4 @@ docker-compose -f ../UNDERWRITER/docker-compose.yml run underwriter-packages sh 
 echo "Rebuilding cache"
 docker-compose -f ../BANKING/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
 docker-compose -f ../INTVOICE/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
+docker-compose -f ../VERIFICATION/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
