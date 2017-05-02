@@ -16,7 +16,8 @@ intvoice_menu() {
   echo "* 2d - Artisan route:clear                           *"
   echo "* 3 - Rebuild Gulp                                   *"
   echo "* 4 - Yarn                                           *"
-  echo "* 5 - Back                                           *"
+  echo "* 5 - Rebuild Cache                                  *"
+  echo "* 6 - Back                                           *"
   echo "******************************************************"
 
   post_message() {
@@ -73,6 +74,9 @@ intvoice_menu() {
         post_message
         ;;
       5)
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
+        ;;
+      6)
         local_env_menu
         ;;
     esac
@@ -96,9 +100,8 @@ banking_menu() {
   echo "* 2b - Artisan DB seed                               *"
   echo "* 2c - Artisan cache:clear                           *"
   echo "* 2d - Artisan route:clear                           *"
-  echo "* 3 - Rebuild Gulp                                   *"
-  echo "* 4 - Yarn                                           *"
-  echo "* 5 - Back                                           *"
+  echo "* 3 - Rebuild Cache                                  *"
+  echo "* 4 - Back                                           *"
   echo "******************************************************"
 
   post_message() {
@@ -146,16 +149,9 @@ banking_menu() {
         post_message
         ;;
       3)
-        echo "Processing Gulp...";
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-packages gulp
-        post_message
+        docker-compose -f ../BANKING/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
         ;;
       4)
-        read -p "Please enter the Yarn command > "
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-packages yarn $REPLY
-        post_message
-        ;;
-      5)
         local_env_menu
         ;;
     esac
