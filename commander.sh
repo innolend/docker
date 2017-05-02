@@ -74,7 +74,7 @@ intvoice_menu() {
         post_message
         ;;
       5)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
         ;;
       6)
         local_env_menu
@@ -149,7 +149,7 @@ banking_menu() {
         post_message
         ;;
       3)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
         ;;
       4)
         local_env_menu
