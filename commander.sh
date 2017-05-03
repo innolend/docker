@@ -44,23 +44,23 @@ intvoice_menu() {
         ;;
       2)
         read -p "Please enter the Artisan command > "
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php --env=docker artisan $REPLY
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan $REPLY --env=docker 
         post_message
         ;;
       2a)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php --env=docker artisan migrate
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan migrate --env=docker 
         post_message
         ;;
       2b)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php --env=docker artisan db:seed
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan db:seed --env=docker 
         post_message
         ;;
       2c)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php --env=docker artisan cache:clear
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan cache:clear --env=docker 
         post_message
         ;;
       2d)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php --env=docker artisan route:clear
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan route:clear --env=docker 
         post_message
         ;;
       3)
@@ -74,7 +74,7 @@ intvoice_menu() {
         post_message
         ;;
       5)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
         ;;
       6)
         local_env_menu
