@@ -22,12 +22,12 @@ intvoice_menu() {
 
   post_message() {
     read -p "Press enter to continue"
-    intvoice_menu    
+    intvoice_menu
   }
 
-  read -p "Enter selection [1-5] > "
+  read -p "Enter selection [1-6] > "
 
-  if [[ $REPLY =~ ^[1-5]{1} ]]; then
+  if [[ $REPLY =~ ^[1-6]{1} ]]; then
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
@@ -39,28 +39,28 @@ intvoice_menu() {
         post_message
         ;;
       1b)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php composer update --no-scripts  
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php composer update --no-scripts
         post_message
         ;;
       2)
         read -p "Please enter the Artisan command > "
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan $REPLY --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan $REPLY --env=docker
         post_message
         ;;
       2a)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan migrate --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan migrate --env=docker
         post_message
         ;;
       2b)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan db:seed --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan db:seed --env=docker
         post_message
         ;;
       2c)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan cache:clear --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan cache:clear --env=docker
         post_message
         ;;
       2d)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan route:clear --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan route:clear --env=docker
         post_message
         ;;
       3)
@@ -107,12 +107,12 @@ banking_menu() {
   post_message() {
     echo "\n\nFinished! Press any key"
     read a
-    banking_menu    
+    banking_menu
   }
 
-  read -p "Enter selection [1-5] > "
+  read -p "Enter selection [1-4] > "
 
-  if [[ $REPLY =~ ^[1-5]{1} ]]; then
+  if [[ $REPLY =~ ^[1-4]{1} ]]; then
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
@@ -129,27 +129,27 @@ banking_menu() {
         post_message
         ;;
       1b)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php composer update --no-scripts  
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php composer update --no-scripts
         post_message
         ;;
       2a)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php --env=docker artisan migrate
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php artisan migrate --env=docker
         post_message
         ;;
       2b)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php --env=docker artisan db:seed
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php artisan db:seed --env=docker
         post_message
         ;;
       2c)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php --env=docker artisan cache:clear
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php artisan cache:clear --env=docker
         post_message
         ;;
       2d)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php --env=docker artisan route:clear
+        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php artisan route:clear --env=docker
         post_message
         ;;
       3)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
+        docker-compose -f ../BANKING/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
         ;;
       4)
         local_env_menu
@@ -162,114 +162,6 @@ banking_menu() {
   fi
 }
 
-verification_menu() {
-  clear
-  echo "******************************************************"
-  echo "* VERIFICATION ENV                                       *"
-  echo "******************************************************"
-  echo "* 1 - Composer                                       *"
-  echo "* 1a - Composer install                              *"
-  echo "* 1b - Composer update --no-scripts                  *"
-  echo "* 2 - Artisan                                        *"
-  echo "* 2a - Artisan cache:clear                           *"
-  echo "* 2b - Artisan route:clear                           *"
-  echo "* 3 - Rebuild Gulp                                   *"
-  echo "* 4 - Yarn                                           *"
-  echo "* 5 - Back                                           *"
-  echo "******************************************************"
-
-  post_message() {
-    read -p "Press enter to continue"
-    verification_menu
-  }
-
-  read -p "Enter selection [1-5] > "
-
-  if [[ $REPLY =~ ^[1-5]{1} ]]; then
-    case $REPLY in
-      1)
-        read -p "Please enter the Composer command > "
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-php composer $REPLY
-        post_message
-        ;;
-      1a)
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-php composer install
-        post_message
-        ;;
-      1b)
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-php composer update --no-scripts
-        post_message
-        ;;
-      2)
-        read -p "Please enter the Artisan command > "
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-php php --env=docker artisan $REPLY
-        post_message
-        ;;
-      2a)
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-php php --env=docker artisan cache:clear
-        post_message
-        ;;
-      2b)
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-php php --env=docker artisan route:clear
-        post_message
-        ;;
-      3)
-        echo "Processing Gulp...";
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-packages gulp
-        post_message
-        ;;
-      4)
-        read -p "Please enter the Yarn command > "
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-packages yarn $REPLY
-        post_message
-        ;;
-      5)
-        local_env_menu
-        ;;
-    esac
-  else
-    echo "Invalid entry."
-    sleep $DELAY
-    verification_menu
-  fi
-}
-
-underwriter_menu() {
-  clear
-  echo "******************************************************"
-  echo "* UNDERWRITER ENV                                    *"
-  echo "******************************************************"
-  echo "* 1 - Yarn                                           *"
-  echo "* 2 - npm run dev                                    *"
-  echo "******************************************************"
-
-  post_message() {
-    read -p "Press enter to continue"
-    underwriter_menu
-  }
-
-  read -p "Enter selection [1-2] > "
-
-  if [[ $REPLY =~ ^[1-2]{1} ]]; then
-    case $REPLY in
-      1)
-        read -p "Please enter the Yarn command > "
-        docker-compose -f ../UNDERWRITER/docker-compose.yml run --rm underwriter-packages yarn $REPLY
-        post_message
-        ;;
-      2)
-        docker-compose -f ../UNDERWRITER/docker-compose.yml run --rm underwriter-packages npm run dev
-        post_message
-        ;;
-    esac
-  else
-    echo "Invalid entry."
-    sleep $DELAY
-    underwriter_menu
-  fi
-}
-
-
 test_env_menu() {
   clear
   echo "******************************************************"
@@ -279,8 +171,8 @@ test_env_menu() {
   echo "* 2 - Rebuild / Execute acceptiance tests            *"
   echo "* 3 - Back                                           *"
   echo "******************************************************"
-  read -p "Enter selection [1-2] > "
-  if [[ $REPLY =~ ^[1-2]$ ]]; then
+  read -p "Enter selection [1-3] > "
+  if [[ $REPLY =~ ^[1-3]$ ]]; then
     case $REPLY in
       1)
         echo "Running tests"
@@ -312,30 +204,24 @@ local_env_menu() {
   echo "******************************************************"
   echo "* 1 - Build ENV                                      *"
   echo "* 2 - Update ENV                                     *"
-  echo "* 3a - INTVOICE                                      *"
-  echo "* 3b - BANKING                                       *"
-  echo "* 3c - VERIFICATION                                  *"
-  echo "* 3d - UNDERWRITER                                   *"
-  echo "* 4 - Start ENV                                      *"
-  echo "* 5 - Turn off ENV                                   *"
-  echo "* 6 - Remove ENV                                     *"
-  echo "* 7 - Back                                           *"
+  echo "* 3 - INTVOICE                                       *"
+  echo "* 4 - BANKING                                        *"
+  echo "* 5 - Start ENV                                      *"
+  echo "* 6 - Turn off ENV                                   *"
+  echo "* 7 - Remove ENV                                     *"
+  echo "* 8 - Back                                           *"
   echo "******************************************************"
 
-  read -p "Enter selection [1-7] > "
+  read -p "Enter selection [1-8] > "
 
-  if [[ $REPLY =~ ^[1-7]{1} ]]; then
+  if [[ $REPLY =~ ^[1-8]$ ]]; then
     case $REPLY in
       1)
         echo "Building ENV...";
         docker-compose -f ../INTVOICE/docker-compose.yml stop
         docker-compose -f ../BANKING/docker-compose.yml stop
-        docker-compose -f ../VERIFICATION/docker-compose.yml stop
-        docker-compose -f ../UNDERWRITER/docker-compose.yml stop
         docker-compose -f ../INTVOICE/docker-compose.yml rm -f
         docker-compose -f ../BANKING/docker-compose.yml rm -f
-        docker-compose -f ../VERIFICATION/docker-compose.yml rm -f
-        docker-compose -f ../UNDERWRITER/docker-compose.yml rm -f
         sh ./docker_env_pre_build.sh
         sh ./docker_env_build.sh
         read -p "Press enter to continue"
@@ -345,59 +231,40 @@ local_env_menu() {
         echo "Updating ENV...";
         docker-compose -f ../INTVOICE/docker-compose.yml pull
         docker-compose -f ../BANKING/docker-compose.yml pull
-        docker-compose -f ../VERIFICATION/docker-compose.yml pull
-        docker-compose -f ../UNDERWRITER/docker-compose.yml pull
         read -p "Press enter to continue"
         main_menu
         ;;
-      3a)
+      3)
         intvoice_menu
         ;;
-      3b)
-        banking_menu
-        ;;
-      3c)
-        verification_menu
-        ;;
-      3d)
-        underwriter_menu
-        ;;
       4)
-        docker-compose -f ../INTVOICE/docker-compose.yml stop
-        docker-compose -f ../BANKING/docker-compose.yml stop
-        docker-compose -f ../VERIFICATION/docker-compose.yml stop
-        docker-compose -f ../UNDERWRITER/docker-compose.yml stop
-        docker-compose -f ../INTVOICE/docker-compose.yml up -d
-        docker-compose -f ../BANKING/docker-compose.yml up -d
-        docker-compose -f ../VERIFICATION/docker-compose.yml up -d
-        docker-compose -f ../UNDERWRITER/docker-compose.yml up -d
-        echo "INTVOICE available on http://localhost:80";
-        echo "BANKING available on http://localhost:1180";
-        echo "VERIFICATION available on http://localhost:1280";
-        read -p "Env started! Press enter to continue"
-        local_env_menu
+        banking_menu
         ;;
       5)
         docker-compose -f ../INTVOICE/docker-compose.yml stop
         docker-compose -f ../BANKING/docker-compose.yml stop
-        docker-compose -f ../VERIFICATION/docker-compose.yml stop
-        docker-compose -f ../UNDERWRITER/docker-compose.yml stop
-        read -p "Env stopped! Press enter to continue"
+        docker-compose -f ../INTVOICE/docker-compose.yml up -d
+        docker-compose -f ../BANKING/docker-compose.yml up -d
+        echo "INTVOICE available on http://localhost:80";
+        echo "BANKING available on http://localhost:1180";
+        read -p "Env started! Press enter to continue"
         local_env_menu
         ;;
       6)
         docker-compose -f ../INTVOICE/docker-compose.yml stop
         docker-compose -f ../BANKING/docker-compose.yml stop
-        docker-compose -f ../VERIFICATION/docker-compose.yml stop
-        docker-compose -f ../UNDERWRITER/docker-compose.yml stop
-        docker-compose -f ../INTVOICE/docker-compose.yml rm -f
-        docker-compose -f ../BANKING/docker-compose.yml rm -f
-        docker-compose -f ../VERIFICATION/docker-compose.yml rm -f
-        docker-compose -f ../UNDERWRITER/docker-compose.yml rm -f
-        read -p "Env removed! Press enter to continue"
+        read -p "Env stopped! Press enter to continue"
         local_env_menu
         ;;
       7)
+        docker-compose -f ../INTVOICE/docker-compose.yml stop
+        docker-compose -f ../BANKING/docker-compose.yml stop
+        docker-compose -f ../INTVOICE/docker-compose.yml rm -f
+        docker-compose -f ../BANKING/docker-compose.yml rm -f
+        read -p "Env removed! Press enter to continue"
+        local_env_menu
+        ;;
+      8)
         main_menu
         ;;
     esac
