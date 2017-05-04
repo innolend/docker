@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+  drone-server:
+    image: drone/drone:0.5
+    ports:
+      - 4080:8000
+    volumes:
+      - ./drone:/var/lib/drone/
+    restart: always
+    environment:
+      - DRONE_OPEN=true
+      - DRONE_GITHUB=true
+      - DRONE_GITHUB_URL=https://github.com
+      - DRONE_ADMIN=innolend-ci,buchkovsky
+      - DRONE_GITHUB_CLIENT=1b78c24958ecab75e1a5
+      - DRONE_GITHUB_SECRET=eb54c7fb8e7fe0d277b046d48336907317ef8843
+      - DRONE_GITHUB_SCOPE=repo,repo:status,user:email,read:org
+      - DRONE_SECRET=inno-secret
+
+  drone-agent:
+    image: drone/drone:0.5
+    command: agent
+    restart: always
+    depends_on: [ drone-server ]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - DRONE_SERVER=ws://drone-server:8000/ws/broker
+      - DRONE_SECRET=inno-secret
