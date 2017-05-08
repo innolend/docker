@@ -27,7 +27,7 @@ intvoice_menu() {
 
   read -p "Enter selection [1-5] > "
 
-  if [[ $REPLY =~ ^[1-5]{1} ]]; then
+  if [[ $REPLY =~ ^[1-9]{1} ]]; then
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
@@ -110,9 +110,9 @@ banking_menu() {
     banking_menu    
   }
 
-  read -p "Enter selection [1-5] > "
+  read -p "Enter selection > "
 
-  if [[ $REPLY =~ ^[1-5]{1} ]]; then
+  if [[ $REPLY =~ ^[1-9]{1} ]]; then
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
@@ -289,7 +289,7 @@ test_env_menu() {
       2)
         echo "Rebuilding env"
         docker-compose -f ../INTVOICE/docker-compose.test.yml stop
-        docker-compose -f ../INTVOICE/docker-compose.test.yml rm
+        docker-compose -f ../INTVOICE/docker-compose.test.yml rm -f
         docker-compose -f ../INTVOICE/docker-compose.test.yml pull
         docker-compose -f ../INTVOICE/docker-compose.test.yml up -d
         sh ./docker_intvoice_acceptance_test_runner.sh
