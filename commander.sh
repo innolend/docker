@@ -65,12 +65,12 @@ intvoice_menu() {
         ;;
       3)
         echo "Processing Gulp...";
-        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-packages gulp
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-packages gulp
         post_message
         ;;
       4)
         read -p "Please enter the Yarn command > "
-        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-packages yarn $REPLY
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-packages yarn $REPLY
         post_message
         ;;
       5)
@@ -215,12 +215,12 @@ verification_menu() {
         ;;
       3)
         echo "Processing Gulp...";
-        docker-compose -f ../VERIFICATION/docker-compose.yml exec verification-packages gulp
+        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-packages gulp
         post_message
         ;;
       4)
         read -p "Please enter the Yarn command > "
-        docker-compose -f ../VERIFICATION/docker-compose.yml exec verification-packages yarn $REPLY
+        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-packages yarn $REPLY
         post_message
         ;;
       5)
@@ -254,11 +254,11 @@ underwriter_menu() {
     case $REPLY in
       1)
         read -p "Please enter the Yarn command > "
-        docker-compose -f ../UNDERWRITER/docker-compose.yml exec underwriter-packages yarn $REPLY
+        docker-compose -f ../UNDERWRITER/docker-compose.yml run --rm underwriter-packages yarn $REPLY
         post_message
         ;;
       2)
-        docker-compose -f ../UNDERWRITER/docker-compose.yml exec underwriter-packages npm run dev
+        docker-compose -f ../UNDERWRITER/docker-compose.yml run --rm underwriter-packages npm run dev
         post_message
         ;;
     esac
@@ -422,12 +422,13 @@ main_menu() {
   echo "******************************************************"
   echo "* 1 - working with local env                         *"
   echo "* 2 - working with test env                          *"
-  echo "* 3 - exit                                           *"
+  echo "* 3 - prepare packages list (file 'packages.list')   *"
+  echo "* 4 - exit                                           *"
   echo "******************************************************"
 
-  read -p "Enter selection [1-3] > "
+  read -p "Enter selection [1-9] > "
 
-  if [[ $REPLY =~ ^[1-3]$ ]]; then
+  if [[ $REPLY =~ ^[1-9]$ ]]; then
     case $REPLY in
       1)
         local_env_menu
@@ -436,6 +437,13 @@ main_menu() {
         test_env_menu
         ;;
       3)
+        rm -f packages.list
+        cat ../INTVOICE/yarn.lock | grep 'https://' | awk '{ print $2 }' | sed 's/"//g' > ./packages.list
+        echo "File stored in same folder as commander and called 'packages.list'"
+        read -p "Press enter to continue"
+        main_menu
+        ;;
+      4)
         clear
         exit 0
         ;;
