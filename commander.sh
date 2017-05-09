@@ -31,50 +31,50 @@ intvoice_menu() {
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php composer $REPLY
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php composer $REPLY
         post_message
         ;;
       1a)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php composer install
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php composer install
         post_message
         ;;
       1b)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php composer update --no-scripts  
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php composer update --no-scripts  
         post_message
         ;;
       2)
         read -p "Please enter the Artisan command > "
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan $REPLY --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan $REPLY --env=docker 
         post_message
         ;;
       2a)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan migrate --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan migrate --env=docker 
         post_message
         ;;
       2b)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan db:seed --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan db:seed --env=docker 
         post_message
         ;;
       2c)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan cache:clear --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan cache:clear --env=docker 
         post_message
         ;;
       2d)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php php artisan route:clear --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan route:clear --env=docker 
         post_message
         ;;
       3)
         echo "Processing Gulp...";
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-packages gulp
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-packages gulp
         post_message
         ;;
       4)
         read -p "Please enter the Yarn command > "
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-packages yarn $REPLY
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-packages yarn $REPLY
         post_message
         ;;
       5)
-        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
         ;;
       6)
         local_env_menu
@@ -116,40 +116,40 @@ banking_menu() {
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php composer $REPLY
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php composer $REPLY
         post_message
         ;;
       2)
         read -p "Please enter the Artisan command > "
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php artisan $REPLY
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php artisan $REPLY
         post_message
         ;;
       1a)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php composer install
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php composer install
         post_message
         ;;
       1b)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php composer update --no-scripts  
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php composer update --no-scripts  
         post_message
         ;;
       2a)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php --env=docker artisan migrate
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php --env=docker artisan migrate
         post_message
         ;;
       2b)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php --env=docker artisan db:seed
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php --env=docker artisan db:seed
         post_message
         ;;
       2c)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php --env=docker artisan cache:clear
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php --env=docker artisan cache:clear
         post_message
         ;;
       2d)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php php --env=docker artisan route:clear
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php --env=docker artisan route:clear
         post_message
         ;;
       3)
-        docker-compose -f ../BANKING/docker-compose.yml run --rm banking-php sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
         ;;
       4)
         local_env_menu
@@ -189,38 +189,38 @@ verification_menu() {
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-php composer $REPLY
+        docker-compose -f ../VERIFICATION/docker-compose.yml exec verification-php composer $REPLY
         post_message
         ;;
       1a)
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-php composer install
+        docker-compose -f ../VERIFICATION/docker-compose.yml exec verification-php composer install
         post_message
         ;;
       1b)
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-php composer update --no-scripts
+        docker-compose -f ../VERIFICATION/docker-compose.yml exec verification-php composer update --no-scripts
         post_message
         ;;
       2)
         read -p "Please enter the Artisan command > "
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-php php --env=docker artisan $REPLY
+        docker-compose -f ../VERIFICATION/docker-compose.yml exec verification-php php --env=docker artisan $REPLY
         post_message
         ;;
       2a)
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-php php --env=docker artisan cache:clear
+        docker-compose -f ../VERIFICATION/docker-compose.yml exec verification-php php --env=docker artisan cache:clear
         post_message
         ;;
       2b)
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-php php --env=docker artisan route:clear
+        docker-compose -f ../VERIFICATION/docker-compose.yml exec verification-php php --env=docker artisan route:clear
         post_message
         ;;
       3)
         echo "Processing Gulp...";
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-packages gulp
+        docker-compose -f ../VERIFICATION/docker-compose.yml exec verification-packages gulp
         post_message
         ;;
       4)
         read -p "Please enter the Yarn command > "
-        docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-packages yarn $REPLY
+        docker-compose -f ../VERIFICATION/docker-compose.yml exec verification-packages yarn $REPLY
         post_message
         ;;
       5)
@@ -254,11 +254,11 @@ underwriter_menu() {
     case $REPLY in
       1)
         read -p "Please enter the Yarn command > "
-        docker-compose -f ../UNDERWRITER/docker-compose.yml run --rm underwriter-packages yarn $REPLY
+        docker-compose -f ../UNDERWRITER/docker-compose.yml exec underwriter-packages yarn $REPLY
         post_message
         ;;
       2)
-        docker-compose -f ../UNDERWRITER/docker-compose.yml run --rm underwriter-packages npm run dev
+        docker-compose -f ../UNDERWRITER/docker-compose.yml exec underwriter-packages npm run dev
         post_message
         ;;
     esac
