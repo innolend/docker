@@ -277,10 +277,11 @@ test_env_menu() {
   echo "******************************************************"
   echo "* 1 - Execute acceptiance tests                      *"
   echo "* 2 - Rebuild / Execute acceptiance tests            *"
-  echo "* 3 - Back                                           *"
+  echo "* 3 - Turn off ENV                                   *"
+  echo "* 4 - Back                                           *"
   echo "******************************************************"
-  read -p "Enter selection [1-2] > "
-  if [[ $REPLY =~ ^[1-2]$ ]]; then
+  read -p "Enter selection [1-4] > "
+  if [[ $REPLY =~ ^[1-4]$ ]]; then
     case $REPLY in
       1)
         echo "Running tests"
@@ -295,6 +296,10 @@ test_env_menu() {
         sh ./docker_intvoice_acceptance_test_runner.sh
         ;;
       3)
+        docker-compose -f ../INTVOICE/docker-compose.test.yml stop
+        read -p "Env stopped! Press enter to continue"
+        ;;
+      4)
         main_menu
         ;;
     esac
