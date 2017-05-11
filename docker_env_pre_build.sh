@@ -3,11 +3,6 @@ docker-compose -f ../BANKING/docker-compose.yml up -d
 docker-compose -f ../INTVOICE/docker-compose.yml up -d
 docker-compose -f ../VERIFICATION/docker-compose.yml up -d
 
-echo "Vendor precopy"
-docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php sh -c "cp -aR /opt/offline/vendor/* /opt/project/vendor"
-docker-compose -f ../BANKING/docker-compose.yml exec banking-php sh -c "cp -aR /opt/offline/vendor/* /opt/project/vendor"
-docker-compose -f ../VERIFICATION/docker-compose.yml exec verification-php sh -c "cp -aR /opt/offline/vendor/* /opt/project/vendor"
-
 echo "Building composer"
 docker-compose -f ../BANKING/docker-compose.yml exec banking-php sh -c "composer install"
 docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php sh -c "composer install"
