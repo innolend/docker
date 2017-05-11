@@ -22,10 +22,10 @@ intvoice_menu() {
 
   post_message() {
     read -p "Press enter to continue"
-    intvoice_menu    
+    intvoice_menu
   }
 
-  read -p "Enter selection [1-5] > "
+  read -p "Enter selection [1-6] > "
 
   if [[ $REPLY =~ ^[1-9]{1} ]]; then
     case $REPLY in
@@ -107,8 +107,9 @@ banking_menu() {
   post_message() {
     echo "\n\nFinished! Press any key"
     read a
-    banking_menu    
+    banking_menu
   }
+
 
   read -p "Enter selection > "
 
@@ -269,7 +270,6 @@ underwriter_menu() {
   fi
 }
 
-
 test_env_menu() {
   clear
   echo "******************************************************"
@@ -317,30 +317,24 @@ local_env_menu() {
   echo "******************************************************"
   echo "* 1 - Build ENV                                      *"
   echo "* 2 - Update ENV                                     *"
-  echo "* 3a - INTVOICE                                      *"
-  echo "* 3b - BANKING                                       *"
-  echo "* 3c - VERIFICATION                                  *"
-  echo "* 3d - UNDERWRITER                                   *"
-  echo "* 4 - Start ENV                                      *"
-  echo "* 5 - Turn off ENV                                   *"
-  echo "* 6 - Remove ENV                                     *"
-  echo "* 7 - Back                                           *"
+  echo "* 3 - INTVOICE                                       *"
+  echo "* 4 - BANKING                                        *"
+  echo "* 5 - Start ENV                                      *"
+  echo "* 6 - Turn off ENV                                   *"
+  echo "* 7 - Remove ENV                                     *"
+  echo "* 8 - Back                                           *"
   echo "******************************************************"
 
-  read -p "Enter selection [1-7] > "
+  read -p "Enter selection [1-8] > "
 
-  if [[ $REPLY =~ ^[1-7]{1} ]]; then
+  if [[ $REPLY =~ ^[1-8]$ ]]; then
     case $REPLY in
       1)
         echo "Building ENV...";
         docker-compose -f ../INTVOICE/docker-compose.yml stop
         docker-compose -f ../BANKING/docker-compose.yml stop
-        docker-compose -f ../VERIFICATION/docker-compose.yml stop
-        docker-compose -f ../UNDERWRITER/docker-compose.yml stop
         docker-compose -f ../INTVOICE/docker-compose.yml rm -f
         docker-compose -f ../BANKING/docker-compose.yml rm -f
-        docker-compose -f ../VERIFICATION/docker-compose.yml rm -f
-        docker-compose -f ../UNDERWRITER/docker-compose.yml rm -f
         sh ./docker_env_pre_build.sh
         sh ./docker_env_build.sh
         read -p "Press enter to continue"
@@ -350,59 +344,40 @@ local_env_menu() {
         echo "Updating ENV...";
         docker-compose -f ../INTVOICE/docker-compose.yml pull
         docker-compose -f ../BANKING/docker-compose.yml pull
-        docker-compose -f ../VERIFICATION/docker-compose.yml pull
-        docker-compose -f ../UNDERWRITER/docker-compose.yml pull
         read -p "Press enter to continue"
         main_menu
         ;;
-      3a)
+      3)
         intvoice_menu
         ;;
-      3b)
-        banking_menu
-        ;;
-      3c)
-        verification_menu
-        ;;
-      3d)
-        underwriter_menu
-        ;;
       4)
-        docker-compose -f ../INTVOICE/docker-compose.yml stop
-        docker-compose -f ../BANKING/docker-compose.yml stop
-        docker-compose -f ../VERIFICATION/docker-compose.yml stop
-        docker-compose -f ../UNDERWRITER/docker-compose.yml stop
-        docker-compose -f ../INTVOICE/docker-compose.yml up -d
-        docker-compose -f ../BANKING/docker-compose.yml up -d
-        docker-compose -f ../VERIFICATION/docker-compose.yml up -d
-        docker-compose -f ../UNDERWRITER/docker-compose.yml up -d
-        echo "INTVOICE available on http://localhost:80";
-        echo "BANKING available on http://localhost:1180";
-        echo "VERIFICATION available on http://localhost:1280";
-        read -p "Env started! Press enter to continue"
-        local_env_menu
+        banking_menu
         ;;
       5)
         docker-compose -f ../INTVOICE/docker-compose.yml stop
         docker-compose -f ../BANKING/docker-compose.yml stop
-        docker-compose -f ../VERIFICATION/docker-compose.yml stop
-        docker-compose -f ../UNDERWRITER/docker-compose.yml stop
-        read -p "Env stopped! Press enter to continue"
+        docker-compose -f ../INTVOICE/docker-compose.yml up -d
+        docker-compose -f ../BANKING/docker-compose.yml up -d
+        echo "INTVOICE available on http://localhost:80";
+        echo "BANKING available on http://localhost:1180";
+        read -p "Env started! Press enter to continue"
         local_env_menu
         ;;
       6)
         docker-compose -f ../INTVOICE/docker-compose.yml stop
         docker-compose -f ../BANKING/docker-compose.yml stop
-        docker-compose -f ../VERIFICATION/docker-compose.yml stop
-        docker-compose -f ../UNDERWRITER/docker-compose.yml stop
-        docker-compose -f ../INTVOICE/docker-compose.yml rm -f
-        docker-compose -f ../BANKING/docker-compose.yml rm -f
-        docker-compose -f ../VERIFICATION/docker-compose.yml rm -f
-        docker-compose -f ../UNDERWRITER/docker-compose.yml rm -f
-        read -p "Env removed! Press enter to continue"
+        read -p "Env stopped! Press enter to continue"
         local_env_menu
         ;;
       7)
+        docker-compose -f ../INTVOICE/docker-compose.yml stop
+        docker-compose -f ../BANKING/docker-compose.yml stop
+        docker-compose -f ../INTVOICE/docker-compose.yml rm -f
+        docker-compose -f ../BANKING/docker-compose.yml rm -f
+        read -p "Env removed! Press enter to continue"
+        local_env_menu
+        ;;
+      8)
         main_menu
         ;;
     esac
