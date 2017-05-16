@@ -39,6 +39,7 @@ intvoice_menu() {
         post_message
         ;;
       1b)
+
         docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php composer update --no-scripts
         post_message
         ;;
@@ -268,7 +269,6 @@ underwriter_menu() {
     underwriter_menu
   fi
 }
-
 
 test_env_menu() {
   clear
