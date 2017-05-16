@@ -22,12 +22,12 @@ intvoice_menu() {
 
   post_message() {
     read -p "Press enter to continue"
-    intvoice_menu    
+    intvoice_menu
   }
 
-  read -p "Enter selection [1-5] > "
+  read -p "Enter selection [1-6] > "
 
-  if [[ $REPLY =~ ^[1-9]{1} ]]; then
+  if [[ $REPLY =~ ^[1-6]{1} ]]; then
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
@@ -39,28 +39,28 @@ intvoice_menu() {
         post_message
         ;;
       1b)
-        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php composer update --no-scripts  
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php composer update --no-scripts
         post_message
         ;;
       2)
         read -p "Please enter the Artisan command > "
-        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan $REPLY --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan $REPLY --env=docker
         post_message
         ;;
       2a)
-        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan migrate --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan migrate --env=docker
         post_message
         ;;
       2b)
-        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan db:seed --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan db:seed --env=docker
         post_message
         ;;
       2c)
-        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan cache:clear --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan cache:clear --env=docker
         post_message
         ;;
       2d)
-        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan route:clear --env=docker 
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan route:clear --env=docker
         post_message
         ;;
       3)
@@ -107,12 +107,12 @@ banking_menu() {
   post_message() {
     echo "\n\nFinished! Press any key"
     read a
-    banking_menu    
+    banking_menu
   }
 
-  read -p "Enter selection > "
+  read -p "Enter selection [1-4] > "
 
-  if [[ $REPLY =~ ^[1-9]{1} ]]; then
+  if [[ $REPLY =~ ^[1-4]{1} ]]; then
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
@@ -129,27 +129,27 @@ banking_menu() {
         post_message
         ;;
       1b)
-        docker-compose -f ../BANKING/docker-compose.yml exec banking-php composer update --no-scripts  
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php composer update --no-scripts
         post_message
         ;;
       2a)
-        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php --env=docker artisan migrate
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php artisan migrate --env=docker
         post_message
         ;;
       2b)
-        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php --env=docker artisan db:seed
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php artisan db:seed --env=docker
         post_message
         ;;
       2c)
-        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php --env=docker artisan cache:clear
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php artisan cache:clear --env=docker
         post_message
         ;;
       2d)
-        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php --env=docker artisan route:clear
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php artisan route:clear --env=docker
         post_message
         ;;
       3)
-        docker-compose -f ../BANKING/docker-compose.yml exec banking-php sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
+        docker-compose -f ../BANKING/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
         ;;
       4)
         local_env_menu
@@ -280,6 +280,7 @@ test_env_menu() {
   echo "* 3 - Turn off ENV                                   *"
   echo "* 4 - Back                                           *"
   echo "******************************************************"
+
   read -p "Enter selection [1-4] > "
   if [[ $REPLY =~ ^[1-4]$ ]]; then
     case $REPLY in
@@ -329,7 +330,7 @@ local_env_menu() {
 
   read -p "Enter selection [1-7] > "
 
-  if [[ $REPLY =~ ^[1-7]{1} ]]; then
+  if [[ $REPLY =~ ^[1-7]$ ]]; then
     case $REPLY in
       1)
         echo "Building ENV...";
