@@ -330,7 +330,7 @@ local_env_menu() {
 
   read -p "Enter selection [1-7] > "
 
-  if [[ $REPLY =~ ^[1-7]$ ]]; then
+  if [[ $REPLY =~ ^[1-7]{1} ]]; then
     case $REPLY in
       1)
         echo "Building ENV...";
@@ -427,9 +427,9 @@ main_menu() {
   echo "* 4 - exit                                           *"
   echo "******************************************************"
 
-  read -p "Enter selection [1-9] > "
+  read -p "Enter selection [1-4] > "
 
-  if [[ $REPLY =~ ^[1-9]$ ]]; then
+  if [[ $REPLY =~ ^[1-4]$ ]]; then
     case $REPLY in
       1)
         local_env_menu
