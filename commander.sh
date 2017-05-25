@@ -17,7 +17,8 @@ intvoice_menu() {
   echo "* 3 - Rebuild Gulp                                   *"
   echo "* 4 - Yarn                                           *"
   echo "* 5 - Rebuild Cache                                  *"
-  echo "* 6 - Back                                           *"
+  echo "* 6 - Dump translations                              *"
+  echo "* 7 - Back                                           *"
   echo "******************************************************"
 
   post_message() {
@@ -27,7 +28,7 @@ intvoice_menu() {
 
   read -p "Enter selection [1-6] > "
 
-  if [[ $REPLY =~ ^[1-6]{1} ]]; then
+  if [[ $REPLY =~ ^[1-7]{1} ]]; then
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
@@ -78,6 +79,9 @@ intvoice_menu() {
         docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
         ;;
       6)
+        docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php sh -c "php artisan translations:frontend-dump --env=docker"
+        ;;
+      7)
         local_env_menu
         ;;
     esac
