@@ -294,6 +294,7 @@ test_env_menu() {
         ;;
       2)
         echo "Rebuilding env"
+        docker-sync start
         docker-compose -f ../INTVOICE/docker-compose.test.yml stop
         docker-compose -f ../INTVOICE/docker-compose.test.yml rm -f
         docker-compose -f ../INTVOICE/docker-compose.test.yml pull
@@ -346,6 +347,7 @@ local_env_menu() {
         docker-compose -f ../BANKING/docker-compose.yml rm -f
         docker-compose -f ../VERIFICATION/docker-compose.yml rm -f
         docker-compose -f ../UNDERWRITER/docker-compose.yml rm -f
+        docker-sync clean
         sh ./docker_env_pre_build.sh
         sh ./docker_env_build.sh
         read -p "Press enter to continue"
@@ -373,6 +375,7 @@ local_env_menu() {
         underwriter_menu
         ;;
       4)
+        docker-sync start
         docker-compose -f ../INTVOICE/docker-compose.yml stop
         docker-compose -f ../BANKING/docker-compose.yml stop
         docker-compose -f ../VERIFICATION/docker-compose.yml stop
@@ -392,6 +395,7 @@ local_env_menu() {
         docker-compose -f ../BANKING/docker-compose.yml stop
         docker-compose -f ../VERIFICATION/docker-compose.yml stop
         docker-compose -f ../UNDERWRITER/docker-compose.yml stop
+        docker-sync stop
         read -p "Env stopped! Press enter to continue"
         local_env_menu
         ;;
@@ -404,6 +408,7 @@ local_env_menu() {
         docker-compose -f ../BANKING/docker-compose.yml rm -f
         docker-compose -f ../VERIFICATION/docker-compose.yml rm -f
         docker-compose -f ../UNDERWRITER/docker-compose.yml rm -f
+        docker-sync clean
         read -p "Env removed! Press enter to continue"
         local_env_menu
         ;;
