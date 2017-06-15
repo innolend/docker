@@ -12,8 +12,8 @@ docker-compose -f ../VERIFICATION/docker-compose.yml exec verification-php sh -c
 
 echo "Building node modules && gulp"
 docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-packages sh -c "yarn add node-sass && yarn config set cache-path /opt/offline/ && yarn install && gulp"
-docker-compose -f ../VERIFICATION/docker-compose.yml run --rm intvoice-packages sh -c "yarn add node-sass && yarn config set cache-path /opt/offline/ && yarn install && gulp"
-docker-compose -f ../UNDERWRITER/docker-compose.yml run --rm intvoice-packages sh -c "yarn config set cache-path /opt/offline/ && yarn install"
+docker-compose -f ../VERIFICATION/docker-compose.yml run --rm verification-packages sh -c "yarn add node-sass && yarn config set cache-path /opt/offline/ && yarn install && gulp"
+docker-compose -f ../UNDERWRITER/docker-compose.yml run --rm underwriter-packages sh -c "yarn config set cache-path /opt/offline/ && yarn install"
 
 echo "Initialize framework folder"
 docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php sh scripts/build-framework-folder.sh
