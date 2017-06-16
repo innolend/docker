@@ -1,5 +1,12 @@
 ## Innolend Docker
 
+###Prerequisites
+
+- Install `docker-sync`, with following command:
+```bash
+sudo gem install docker-sync
+```
+
 Please use our tool to build what ever you want.
 - Build env
 - Run tests

@@ -1,0 +1,14 @@
+version: "2"
+
+syncs:
+  intvoice-sync:
+    src: '../INTVOICE'
+    sync_userid: 82
+    sync_groupid: 82
+    sync_excludes: ['.DS_Store', '.git', '.idea', 'node_modules', 'storage/framework/*', 'storage/debugbar', 'storage/logs']
+
+  banking-sync:
+    src: '../BANKING'
+    sync_userid: 82
+    sync_groupid: 82
+    sync_excludes: ['.DS_Store', '.git', '.idea', 'node_modules', 'storage/framework/*', 'storage/debugbar', 'storage/logs']
