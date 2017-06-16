@@ -1,3 +1,4 @@
 .env
 .idea/
 .docker-sync/
+swagger/out

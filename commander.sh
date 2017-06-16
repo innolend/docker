@@ -26,7 +26,7 @@ intvoice_menu() {
     intvoice_menu
   }
 
-  read -p "Enter selection [1-6] > "
+  read -p "Enter selection [1-7] > "
 
   if [[ $REPLY =~ ^[1-7]{1} ]]; then
     case $REPLY in
@@ -106,7 +106,8 @@ banking_menu() {
   echo "* 2c - Artisan cache:clear                           *"
   echo "* 2d - Artisan route:clear                           *"
   echo "* 3 - Rebuild Cache                                  *"
-  echo "* 4 - Back                                           *"
+  echo "* 4 - Build Swagger client                           *"
+  echo "* 5 - Back                                           *"
   echo "******************************************************"
 
   post_message() {
@@ -115,9 +116,9 @@ banking_menu() {
     banking_menu
   }
 
-  read -p "Enter selection [1-4] > "
+  read -p "Enter selection [1-5] > "
 
-  if [[ $REPLY =~ ^[1-4]{1} ]]; then
+  if [[ $REPLY =~ ^[1-5]{1} ]]; then
     case $REPLY in
       1)
         read -p "Please enter the Composer command > "
@@ -157,6 +158,15 @@ banking_menu() {
         docker-compose -f ../BANKING/docker-compose.yml run --rm sh -c "php artisan optimize --force && php artisan config:cache && php artisan route:cache"
         ;;
       4)
+        docker-compose -f ../BANKING/docker-compose.yml exec banking-php php artisan l5-swagger:generate --env=docker
+        docker run --rm -v ${PWD}/swagger:/local swaggerapi/swagger-codegen-cli generate \
+            -i http://172.20.0.1:1180/docs/api-docs.json \
+            -l php \
+            -c /local/configs/banking-client-php.json \
+            -o /local/out
+        post_message
+        ;;
+      5)
         local_env_menu
         ;;
     esac
