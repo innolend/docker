@@ -1,0 +1,13 @@
+{
+  "appName": "Innolend Banking API client",
+  "appVersion": "1",
+  "appDescription" : "API client for Innolend Banking component",
+  "apiPackage" : "Api",
+  "modelPackage" : "Model",
+  "invokerPackage" : "Innolend\\SDK\\Banking\\Client",
+  "packagePath" : "banking-client-php",
+  "gitUserId" : "innolend",
+  "gitRepoId" : "banking-client-php",
+  "variableNamingConvention" : "camelCase",
+  "artifactVersion" : "0.2.0"
+}
