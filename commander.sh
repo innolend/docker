@@ -14,7 +14,8 @@ intvoice_menu() {
   echo "* 2b - Artisan DB seed                               *"
   echo "* 2c - Artisan cache:clear                           *"
   echo "* 2d - Artisan route:clear                           *"
-  echo "* 3 - Rebuild Gulp                                   *"
+  echo "* 3a - Rebuild Gulp                                  *"
+  echo "* 3b - Rebuild Gulp --production                     *"
   echo "* 4 - Yarn                                           *"
   echo "* 5 - Rebuild Cache                                  *"
   echo "* 6 - Dump translations                              *"
@@ -65,9 +66,14 @@ intvoice_menu() {
         docker-compose -f ../INTVOICE/docker-compose.yml exec intvoice-php php artisan route:clear --env=docker
         post_message
         ;;
-      3)
+      3a)
         echo "Processing Gulp...";
         docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-packages gulp
+        post_message
+        ;;
+      3b)
+        echo "Processing Gulp...";
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-packages gulp --production
         post_message
         ;;
       4)
