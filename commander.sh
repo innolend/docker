@@ -289,33 +289,41 @@ test_env_menu() {
   echo "******************************************************"
   echo "* Test ENV                                           *"
   echo "******************************************************"
-  echo "* 1 - Execute acceptiance tests                      *"
-  echo "* 2 - Rebuild / Execute acceptiance tests            *"
-  echo "* 3 - Turn off ENV                                   *"
-  echo "* 4 - Back                                           *"
+  echo "* 1 - Initialize testing ENV                         *"
+  echo "* 2a - Execute acceptance tests                      *"
+  echo "* 2b - Execute Unit tests                            *"
+  echo "* 3 - Rebuild test EN                                *"
+  echo "* 4 - Turn off ENV                                   *"
+  echo "* 5 - Back                                           *"
   echo "******************************************************"
 
-  read -p "Enter selection [1-4] > "
-  if [[ $REPLY =~ ^[1-4]$ ]]; then
+  read -p "Enter selection [1-5] > "
+  if [[ $REPLY =~ ^[1-5]{1} ]]; then
     case $REPLY in
       1)
-        echo "Running tests"
+        echo "Initializing test environment"
+        sh ./docker_intvoice_acceptance_test_init.sh
+        ;;
+      2a)
+        echo "Running acceptance tests"
         sh ./docker_intvoice_acceptance_test_runner.sh
         ;;
-      2)
-        echo "Rebuilding env"
-        docker-sync start
+      2b)
+        echo "Running UNIT tests"
+        sh ./docker_intvoice_unit_test_runner.sh
+        ;;
+      3)
+        echo "Rebuilding test environment"
         docker-compose -f ../INTVOICE/docker-compose.test.yml stop
         docker-compose -f ../INTVOICE/docker-compose.test.yml rm -f
         docker-compose -f ../INTVOICE/docker-compose.test.yml pull
         docker-compose -f ../INTVOICE/docker-compose.test.yml up -d
-        sh ./docker_intvoice_acceptance_test_runner.sh
         ;;
-      3)
+      4)
         docker-compose -f ../INTVOICE/docker-compose.test.yml stop
         read -p "Env stopped! Press enter to continue"
         ;;
-      4)
+      5)
         main_menu
         ;;
     esac
