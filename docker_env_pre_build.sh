@@ -1,3 +1,5 @@
+#!/bin/bash
+
 docker-sync start
 
 echo "Pre run containers"
