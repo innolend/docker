@@ -5,10 +5,10 @@ syncs:
     src: '../INTVOICE'
     sync_userid: 82
     sync_groupid: 82
-    sync_excludes: ['.DS_Store', '.git', '.idea', 'node_modules', 'storage/framework/*', 'storage/debugbar']
+    sync_excludes: ['.DS_Store', '.git', '.idea', 'node_modules', 'storage/mysql', 'storage/mysql-test', 'storage/framework/*', 'storage/debugbar', 'vendor/**/tests/**']
 
   banking-sync:
     src: '../BANKING'
     sync_userid: 82
     sync_groupid: 82
-    sync_excludes: ['.DS_Store', '.git', '.idea', 'node_modules', 'storage/framework/*', 'storage/debugbar']
+    sync_excludes: ['.DS_Store', '.git', '.idea', 'node_modules', 'storage/mysql', 'storage/mysql-test', 'storage/framework/*', 'storage/debugbar', 'vendor/**/tests/**']
