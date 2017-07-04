@@ -170,6 +170,8 @@ banking_menu() {
             -l php \
             -c /local/configs/banking-client-php.json \
             -o /local/out
+        echo "Copying new client files to the repository directory"
+        cp -R ./swagger/out/banking-client-php/* ../banking-client-php/
         post_message
         ;;
       5)
