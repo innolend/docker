@@ -408,6 +408,7 @@ local_env_menu() {
         docker-compose -f ../BANKING/docker-compose.yml up -d
         docker-compose -f ../VERIFICATION/docker-compose.yml up -d
         docker-compose -f ../UNDERWRITER/docker-compose.yml up -d
+        docker-compose -f ../INTVOICE/docker-compose.yml run --rm intvoice-php sh scripts/build-framework-folder.sh
         echo "INTVOICE available on http://localhost:80";
         echo "BANKING available on http://localhost:1180";
         echo "VERIFICATION available on http://localhost:1280";
