@@ -300,7 +300,7 @@ test_env_menu() {
   echo "* 1 - Initialize testing ENV                         *"
   echo "* 2a - Execute acceptance tests                      *"
   echo "* 2b - Execute Unit tests                            *"
-  echo "* 3 - Rebuild test EN                                *"
+  echo "* 3 - Rebuild test ENV                               *"
   echo "* 4 - Turn off ENV                                   *"
   echo "* 5 - Back                                           *"
   echo "******************************************************"
@@ -311,14 +311,17 @@ test_env_menu() {
       1)
         echo "Initializing test environment"
         sh ./docker_intvoice_acceptance_test_init.sh
+        test_env_menu
         ;;
       2a)
         echo "Running acceptance tests"
         sh ./docker_intvoice_acceptance_test_runner.sh
+        test_env_menu
         ;;
       2b)
         echo "Running UNIT tests"
         sh ./docker_intvoice_unit_test_runner.sh
+        test_env_menu
         ;;
       3)
         echo "Rebuilding test environment"
@@ -326,10 +329,12 @@ test_env_menu() {
         docker-compose -f ../INTVOICE/docker-compose.test.yml rm -f
         docker-compose -f ../INTVOICE/docker-compose.test.yml pull
         docker-compose -f ../INTVOICE/docker-compose.test.yml up -d
+        test_env_menu
         ;;
       4)
         docker-compose -f ../INTVOICE/docker-compose.test.yml stop
         read -p "Env stopped! Press enter to continue"
+        test_env_menu
         ;;
       5)
         main_menu
